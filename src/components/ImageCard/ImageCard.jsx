@@ -1,11 +1,14 @@
 import css from './ImageCard.module.css';
 
-export const ImageCard = ({ dataItem, active, setActive }) => {
+export const ImageCard = ({ item, handleItemClick }) => {
+
     return (
-        <div className={`${css.modal} ${active ? css.active : ''}`} onClick={() => setActive(false)}>
-            <div className={css.modalContent} onClick={(e) => e.stopPropagation()}>
-                <img className={css.modalImg} src={dataItem.urls.regular} alt="" />
-            </div>
-        </div>
+        <>
+            <li onClick={() => handleItemClick(item)} key={item.id} className={css.listItem}>
+                <div>
+                    <img className={css.listImage} src={item.cover_photo.urls.small} alt={item.alt_description} />
+                </div>
+            </li>
+        </>
     );
 };

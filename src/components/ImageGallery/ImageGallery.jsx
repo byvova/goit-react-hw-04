@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { ImageCard } from '../ImageCard/ImageCard';
 import css from './ImageGallery.module.css';
+import { ImageCard } from '../ImageCard/ImageCard';
 
-export const ImageGallery = ({ data }) => {
-    const [active, setActive] = useState(false);
-    const [clickedItem, setClickedItem] = useState(null)
+export const ImageGallery = ({ data, setActive, setClickedItem }) => {
+
+
 
     const handleItemClick = (item) => {
         setActive(true)
@@ -15,15 +15,11 @@ export const ImageGallery = ({ data }) => {
         <>
             <ul className={css.container}>
                 {data.map(item => (
-                    <li onClick={() => handleItemClick(item)} key={item.id} className={css.listItem}>
-                        <div>
-                            <img className={css.listImage} src={item.urls.small} alt={item.alt_description} />
-                        </div>
-                    </li>
+                    <ImageCard key={item.id} item={item} handleItemClick={handleItemClick} />
                 ))}
             </ul>
 
-            {active ? <ImageCard dataItem={clickedItem} active={active} setActive={setActive} /> : null}
+
         </>
     );
 };
