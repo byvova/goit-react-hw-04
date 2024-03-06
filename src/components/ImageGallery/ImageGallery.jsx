@@ -12,14 +12,10 @@ export const ImageGallery = ({ data, setActive, setClickedItem }) => {
     };
 
     return (
-        <>
-            <ul className={css.container}>
-                {data.map(item => (
-                    <ImageCard key={item.id} item={item} handleItemClick={handleItemClick} />
-                ))}
-            </ul>
-
-
-        </>
+        <ul className={css.container}>
+            {data.map(item => (
+                <ImageCard key={item.id} item={item} handleItemClick={handleItemClick} />
+            ))}
+        </ul>
     );
 };

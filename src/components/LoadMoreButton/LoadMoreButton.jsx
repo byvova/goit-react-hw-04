@@ -1,3 +1,6 @@
+import css from './LoadMoreButton.module.css'
+
+
 export const LoadMoreBtn = ({ loadMore, setLoadMore }) => {
 
     const handleLoadMore = () => {
@@ -6,7 +9,7 @@ export const LoadMoreBtn = ({ loadMore, setLoadMore }) => {
 
     return (
         <>
-            <button onClick={handleLoadMore}>Load more</button>
+            <button className={css.loadMoreBtn} onClick={handleLoadMore}>Load more</button>
         </>
     )
 }

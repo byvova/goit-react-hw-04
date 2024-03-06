@@ -14,14 +14,17 @@ function App() {
   const [active, setActive] = useState(false);
   const [clickedItem, setClickedItem] = useState(null)
   const [loading, setLoading] = useState(false);
-  const [loadMore, setLoadMore] = useState(1)
+  const [loadMore, setLoadMore] = useState(1);
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const KEY = 'd-390Tt5FKLSiqiJqBT5KwzZKa9mGOhmMo1TUmrzu8I'
-        const url = `https://api.unsplash.com/search/collections?page=${loadMore}&per_page=12&query=${search}&client_id=${KEY}`
+        const url = `https://api.unsplash.com/search/collections?page=1&per_page=12&query=${search}&client_id=${KEY}`
         setData([])
         const promise = await axios.get(url)
         const response = await promise.data.results
@@ -34,7 +37,24 @@ function App() {
     }
     fetchData()
 
-  }, [search, loadMore]);
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const KEY = 'd-390Tt5FKLSiqiJqBT5KwzZKa9mGOhmMo1TUmrzu8I';
+        const url = `https://api.unsplash.com/search/collections?page=${loadMore}&per_page=12&query=${search}&client_id=${KEY}`;
+        const response = await axios.get(url);
+        setData(prevData => [...prevData, ...response.data.results]);
+        setLoading(false);
+      } catch {
+        console.log(console.error('error'));
+      }
+    }
+    fetchData()
+
+  }, [loadMore])
 
 
 
@@ -53,7 +73,8 @@ function App() {
         ariaLabel="dna-loading"
         wrapperStyle={{}}
         wrapperClass="dna-wrapper" />}
-      {loading == false ? <LoadMoreBtn loadMore={loadMore} setLoadMore={setLoadMore} /> : null}
+      {loading || data.length === 0 ? null : <LoadMoreBtn loadMore={loadMore} setLoadMore={setLoadMore} />}
+
     </>
   )
 }
