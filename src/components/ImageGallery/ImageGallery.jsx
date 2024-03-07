@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import css from './ImageGallery.module.css';
 import { ImageCard } from '../ImageCard/ImageCard';
 
+
 export const ImageGallery = ({ data, setActive, setClickedItem }) => {
-
-
 
     const handleItemClick = (item) => {
         setActive(true)
@@ -13,8 +11,8 @@ export const ImageGallery = ({ data, setActive, setClickedItem }) => {
 
     return (
         <ul className={css.container}>
-            {data.map(item => (
-                <ImageCard key={item.id} item={item} handleItemClick={handleItemClick} />
+            {data.map((item, index) => (
+                <ImageCard key={index} item={item} handleItemClick={handleItemClick} />
             ))}
         </ul>
     );

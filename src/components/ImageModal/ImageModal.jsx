@@ -1,6 +1,6 @@
-import css from './ImageModule.module.css';
+import css from './ImageModal.module.css';
 
-export const ImageModule = ({ dataItem, active, setActive }) => {
+export const ImageModal = ({ dataItem, active, setActive }) => {
     return (
 
         <div className={`${css.modal} ${active ? css.active : ''}`} onClick={() => setActive(false)}>

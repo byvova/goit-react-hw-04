@@ -15,7 +15,7 @@ export const SearchBar = ({ setSearch }) => {
         e.preventDefault();
         const search = e.target.elements[0].value
         setSearch(search);
-        { search == '' ? notifyError() : notifySuccess() }
+        search == '' ? notifyError() : notifySuccess()
     }
 
 

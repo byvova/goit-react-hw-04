@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 import './App.module.css'
 import { SearchBar } from '../SearchBar/SearchBar'
-import axios from 'axios'
-import { ImageGallery } from '../ImageGallery/ImageGallery'
-import { ImageModule } from '../ImageModule/ImageModule'
-import { DNA } from 'react-loader-spinner'
+
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage'
-import { LoadMoreBtn } from '../LoadMoreButton/LoadMoreButton'
+import { LoadMoreBtn } from '../LoadMoreBtn/LoadMoreBtn'
+import { ImageGallery } from '../ImageGallery/ImageGallery'
+import { Loader } from '../Loader/Loader'
+import { fetchCollections, fetchPagination } from '../../articles-api'
+import { ImageModal } from '../ImageModal/ImageModal'
+
+
 
 function App() {
   const [search, setSearch] = useState('')
@@ -18,21 +22,16 @@ function App() {
 
 
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const KEY = 'd-390Tt5FKLSiqiJqBT5KwzZKa9mGOhmMo1TUmrzu8I'
-        const url = `https://api.unsplash.com/search/collections?page=1&per_page=12&query=${search}&client_id=${KEY}`
         setData([])
-        const promise = await axios.get(url)
-        const response = await promise.data.results
-
+        const response = await fetchCollections(search)
         setData(response);
         setLoading(false);
       } catch {
-        console.log(console.error('error'));
+        console.log(console.error(Error));
       }
     }
     fetchData()
@@ -43,18 +42,16 @@ function App() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const KEY = 'd-390Tt5FKLSiqiJqBT5KwzZKa9mGOhmMo1TUmrzu8I';
-        const url = `https://api.unsplash.com/search/collections?page=${loadMore}&per_page=12&query=${search}&client_id=${KEY}`;
-        const response = await axios.get(url);
-        setData(prevData => [...prevData, ...response.data.results]);
+        const response = await fetchPagination(search, loadMore);
+        setData(prevData => [...prevData, ...response]);
         setLoading(false);
-      } catch {
-        console.log(console.error('error'));
+      } catch (error) {
+        console.error(error);
       }
-    }
-    fetchData()
+    };
+    fetchData();
+  }, [loadMore]);
 
-  }, [loadMore])
 
 
 
@@ -65,14 +62,8 @@ function App() {
       <SearchBar setSearch={setSearch}></SearchBar>
       {data.length > 0 ? <ImageGallery data={data} setActive={setActive} setClickedItem={setClickedItem} /> : <ErrorMessage />}
 
-      {active ? <ImageModule dataItem={clickedItem} active={active} setActive={setActive} /> : null}
-      {loading && <DNA
-        visible={true}
-        height="80"
-        width="10000"
-        ariaLabel="dna-loading"
-        wrapperStyle={{}}
-        wrapperClass="dna-wrapper" />}
+      {active ? <ImageModal dataItem={clickedItem} active={active} setActive={setActive} /> : null}
+      {loading && <Loader />}
       {loading || data.length === 0 ? null : <LoadMoreBtn loadMore={loadMore} setLoadMore={setLoadMore} />}
 
     </>
